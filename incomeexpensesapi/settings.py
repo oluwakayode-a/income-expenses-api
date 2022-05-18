@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cdx3ypgkxl@#5aspvbpn(@7t2_h)qmhh738e)c5$w*%s^bqoiv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 AUTH_USER_MODEL = "authentication.User"
 
 # Application definition
@@ -41,15 +41,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     'drf_yasg',
     'authentication',
     'expenses',
-    'income'
+    'income',
+    'userstats',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -93,6 +99,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES" : [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    "EXCEPTION_HANDLER" : "utils.exception_handler.custom_exception_handler",
     "DEFAULT_PAGINATION_CLASS" : "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE" : 10
 }
@@ -108,7 +115,7 @@ SWAGGER_SETTINGS = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME' : timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME' : timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME' : timedelta(days=2)
 }
 

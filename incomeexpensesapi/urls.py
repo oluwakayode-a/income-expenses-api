@@ -20,11 +20,17 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('admin/', admin.site.urls),
-    path("auth/", include("authentication.urls")),
-    path("expenses/", include("expenses.urls")),
-    path("income/", include("income.urls"))
+   path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+   path('api/api.json/', schema_view.without_ui(cache_timeout=0), name="schema"),
+   re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+   path('admin/', admin.site.urls),
+   path("auth/", include("authentication.urls")),
+   path("expenses/", include("expenses.urls")),
+   path("income/", include("income.urls")),
+   path("userstats/", include("userstats.urls")),
+   path("social_auth/", include("social_auth.urls")),
 
 ]
+
+handler404 = 'utils.views.error404'
+handler500 = 'utils.views.error500'
